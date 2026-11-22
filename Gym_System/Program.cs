@@ -10,6 +10,7 @@ namespace Gym_System
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+            app.UseMiddleware<CustomMiddleware.RequestTimingMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

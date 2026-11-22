@@ -2,6 +2,7 @@
 using Gym_System.Models;
 namespace Gym_System.Controllers
 {
+    [Route("Test")]
     public class ProductsController : Controller
     {
         public IActionResult Index()
@@ -50,14 +51,57 @@ namespace Gym_System.Controllers
 
 
 
-       #endregion
+        #endregion
+
+        #region Action
 
         public IActionResult FileAction()
         {
             byte[] fileBytes = System.IO.File.ReadAllBytes("C:\\Users\\DAR\\source\\repos\\Gym_System\\Gym_System\\wwwroot\\files\\sample.pdf");
   
             return File(fileBytes, "application/pdf", "sample.pdf");
+ 
         }
+
+#endregion
+        #region Routing
+        [Route("Test")]
+
+        [HttpGet("json")]
+
+        public IActionResult JsonAction()
+        {
+            return Json("Hello from JsonAction");
+
+        }
+
+        [HttpGet("ProductCode/{Code:int}")]
+
+        public IActionResult ProductCode(int code)
+        {
+            return Json(new Product { Id = code, Name = $"Product01" });
+        }
+
+        #endregion
+
+
+        #region Model binding
+
+        [HttpGet]
+        public IActionResult Search(ProductsFilter filter)
+
+        {
+            return View();
+
+        }
+
+        [HttpGet]
+        public IActionResult  ([FromQuery] int id, [FromQuery(Name ="id2")] int otherId)
+        {
+            return Json(new { source = "Query", id, otherId });
+        }
+        #endregion
+
 
     }
 }
